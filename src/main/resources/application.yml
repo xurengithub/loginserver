@@ -36,6 +36,7 @@ logging:
 
 curator:
   retryCount: 5
+  retrySleepTimeMs: 1000
   elapsedTimeMs: 5000
   connectString: 127.0.0.1:2181
   sessionTimeoutMs: 60000

@@ -15,7 +15,7 @@ public class CuratorConfiguration {
     public CuratorFramework curatorFramework(ZKConfig zkConfig) {
         return CuratorFrameworkFactory.builder()
             .connectString(zkConfig.getConnectString())
-            .retryPolicy(new ExponentialBackoffRetry(1000, 3))
+            .retryPolicy(new ExponentialBackoffRetry(zkConfig.getRetrySleepTimeMs(), zkConfig.getRetryCount()))
             .connectionTimeoutMs(zkConfig.getConnectionTimeoutMs())
             .sessionTimeoutMs(zkConfig.getSessionTimeoutMs())
             .namespace(zkConfig.getNamespace())

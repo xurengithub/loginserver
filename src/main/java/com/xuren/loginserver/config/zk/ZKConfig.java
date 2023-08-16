@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "curator")
 public class ZKConfig {
     private int retryCount;
+    private int retrySleepTimeMs;
     private int elapsedTimeMs;
     private String connectString;
     private int sessionTimeoutMs;
