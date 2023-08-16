@@ -1,4 +1,4 @@
-package com.xuren.loginserver.config;
+package com.xuren.loginserver.config.zk;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

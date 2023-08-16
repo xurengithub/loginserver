@@ -1,4 +1,4 @@
-package com.xuren.loginserver.config;
+package com.xuren.loginserver.config.zk;
 
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
