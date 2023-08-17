@@ -20,7 +20,9 @@ public class InitZkNode implements InitializingBean {
     @Override
     public void afterPropertiesSet() throws Exception {
         String ip = InetAddress.getLocalHost().getHostAddress();
-        ZKUtils.create(curatorFramework, "/" + ZkConsts.NODE_PATH, "".getBytes());
+        if (curatorFramework.checkExists().forPath("/" + ZkConsts.NODE_PATH) == null) {
+            ZKUtils.create(curatorFramework, "/" + ZkConsts.NODE_PATH, "".getBytes());
+        }
         ZKUtils.createEphemeral(curatorFramework, "/" + ZkConsts.NODE_PATH + "/" + ip, "".getBytes());
     }
 }
