@@ -9,6 +9,7 @@ import com.xuren.loginserver.dto.RegisterRequest;
 import com.xuren.loginserver.dto.Response;
 import com.xuren.loginserver.entity.AccountInfo;
 import com.xuren.loginserver.entity.RoleInfo;
+import com.xuren.loginserver.entity.UserInfo;
 import com.xuren.loginserver.service.IAccountInfoService;
 import com.xuren.loginserver.service.IRoleInfoService;
 import com.xuren.loginserver.service.IUserInfoService;
@@ -68,15 +69,20 @@ public class AccountController {
     }
 
     @PostMapping("/register")
-    public Response<String> register(@RequestBody RegisterRequest request) {
+    public Response<AccountInfo> register(@RequestBody RegisterRequest request) {
         boolean exists = accountInfoService.getBaseMapper().exists(Wrappers.lambdaQuery(AccountInfo.class).eq(AccountInfo::getAccount, request.getAccount()));
         if (exists) {
             return Response.error("账号已存在");
         }
+
+        UserInfo userInfo = new UserInfo();
+        userInfo.setOpenId("");
+        userInfoService.getBaseMapper().insert(userInfo);
         AccountInfo accountInfo = new AccountInfo();
+        accountInfo.setId(userInfo.getId());
         accountInfo.setAccount(request.getAccount());
         accountInfo.setPassword(DigestUtils.md5DigestAsHex(request.getPassword().getBytes(StandardCharsets.UTF_8)));
         accountInfoService.getBaseMapper().insert(accountInfo);
-        return Response.ok();
+        return Response.ok(accountInfo);
     }
 }
