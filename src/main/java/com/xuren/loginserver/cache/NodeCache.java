@@ -1,7 +1,8 @@
-package com.xuren.loginserver.config.zk;
+package com.xuren.loginserver.cache;
 
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Maps;
+import com.xuren.loginserver.ServerType;
 import com.xuren.loginserver.cache.Node;
 import com.xuren.loginserver.config.BootConfig;
 import com.xuren.loginserver.config.RpcConfig;
@@ -15,13 +16,15 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 
 import java.net.InetAddress;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author xuren
  */
 @Component
-public class InitZkNode implements InitializingBean {
+public class NodeCache implements InitializingBean {
     @Resource
     private CuratorFramework curatorFramework;
     @Resource
@@ -68,5 +71,17 @@ public class InitZkNode implements InitializingBean {
             ZKUtils.create(curatorFramework, ZkConsts.NODE_PATH, "".getBytes());
         }
         ZKUtils.createEphemeral(curatorFramework, ZkConsts.NODE_PATH + "/" + path, JSON.toJSONString(node).getBytes());
+    }
+
+    public List<Node> globals() {
+        return nodes(ServerType.GLOBAL);
+    }
+
+    public List<Node> gameServers() {
+        return nodes(ServerType.GAME_SERVER);
+    }
+
+    public List<Node> nodes(ServerType serverType) {
+        return nodeCache.values().stream().filter(node -> node.getType().equals(serverType.name())).collect(Collectors.toList());
     }
 }
