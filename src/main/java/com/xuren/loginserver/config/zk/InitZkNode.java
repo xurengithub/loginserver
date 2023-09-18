@@ -53,6 +53,7 @@ public class InitZkNode implements InitializingBean {
                 }
             }
         });
+        cache.start();
 
 
         String ip = InetAddress.getLocalHost().getHostAddress();
