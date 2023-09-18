@@ -63,3 +63,8 @@ curator:
   sessionTimeoutMs: 60000
   connectionTimeoutMs: 5000
   namespace: game
+
+rpc:
+  port: 9999
+server:
+  port: 8080
