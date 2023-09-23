@@ -11,6 +11,7 @@ import jakarta.annotation.Resource;
 import javassist.util.proxy.ProxyFactory;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -40,10 +41,8 @@ public class GrpcClientManager {
             return ClientCalls.blockingUnaryCall(channel, descriptor, CallOptions.DEFAULT.withDeadline(Deadline.after(100, TimeUnit.SECONDS)), objects);
         });
         try {
-            return (T) proxyFactory.createClass().newInstance();
-        } catch (InstantiationException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
+            return clazz.cast(proxyFactory.createClass().getDeclaredConstructor(new Class[]{}).newInstance());
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
     }
