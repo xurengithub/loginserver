@@ -37,44 +37,43 @@ public class NodeCache implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-//        var cache = new PathChildrenCache(curatorFramework, ZkConsts.NODE_PATH, true);
-//        cache.getListenable().addListener((curatorFramework, pathChildrenCacheEvent) -> {
-//            var eventType = pathChildrenCacheEvent.getType();
-//            if (eventType != PathChildrenCacheEvent.Type.CHILD_ADDED || eventType != PathChildrenCacheEvent.Type.CHILD_UPDATED || eventType != PathChildrenCacheEvent.Type.CHILD_REMOVED) {
-//                return;
-//            }
-//            var data = pathChildrenCacheEvent.getData();
-//            var path = data.getPath();
-//            var dataBytes = data.getData();
-//            if (StringUtils.startsWith(path, ZkConsts.NODE_PATH)) {
-//                switch (eventType) {
-//                    case CHILD_ADDED:
-//                    case CHILD_UPDATED:
-//                        nodeCache.put(path, JSON.parseObject(dataBytes, Node.class));
-//                        break;
-//                    case CHILD_REMOVED:
-//                        nodeCache.remove(path);
-//                        break;
-//                    default:
-//                        break;
-//                }
-//            }
-//        });
-//        cache.start();
-//
-//
-//        String ip = InetAddress.getLocalHost().getHostAddress();
-//        var path = ip + "_" + "GLOBAL" + "_" + 0;
-//        Node node = new Node();
-//        node.setIp(ip);
-//        node.setServerId(path);
-//        node.setType("GLOBAL");
-//        node.setRpcPort(rpcConfig.getPort());
-//        node.setRestPort(bootConfig.getPort());
-////        if (curatorFramework.checkExists().forPath(ZkConsts.NODE_PATH) == null) {
-////            ZKUtils.create(curatorFramework, ZkConsts.NODE_PATH, "".getBytes());
-////        }
-//        ZKUtils.createEphemeral(curatorFramework, ZkConsts.NODE_PATH + "/" + path, JSON.toJSONString(node).getBytes());
+        var cache = new PathChildrenCache(curatorFramework, ZkConsts.NODE_PATH, true);
+        cache.getListenable().addListener((curatorFramework, pathChildrenCacheEvent) -> {
+            var eventType = pathChildrenCacheEvent.getType();
+            if (eventType != PathChildrenCacheEvent.Type.CHILD_ADDED && eventType != PathChildrenCacheEvent.Type.CHILD_UPDATED && eventType != PathChildrenCacheEvent.Type.CHILD_REMOVED) {
+                return;
+            }
+            var data = pathChildrenCacheEvent.getData();
+            var path = data.getPath();
+            var dataBytes = data.getData();
+            if (StringUtils.startsWith(path, ZkConsts.NODE_PATH)) {
+                switch (eventType) {
+                    case CHILD_ADDED:
+                    case CHILD_UPDATED:
+                        nodeCache.put(path, JSON.parseObject(dataBytes, Node.class));
+                        break;
+                    case CHILD_REMOVED:
+                        nodeCache.remove(path);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+        cache.start();
+
+        String ip = InetAddress.getLocalHost().getHostAddress();
+        var path = ip + "_" + "GLOBAL" + "_" + 0;
+        Node node = new Node();
+        node.setIp(ip);
+        node.setServerId(path);
+        node.setType("GLOBAL");
+        node.setRpcPort(rpcConfig.getPort());
+        node.setRestPort(bootConfig.getPort());
+        if (curatorFramework.checkExists().forPath(ZkConsts.NODE_PATH) == null) {
+            ZKUtils.create(curatorFramework, ZkConsts.NODE_PATH, "".getBytes());
+        }
+        ZKUtils.createEphemeral(curatorFramework, ZkConsts.NODE_PATH + "/" + path, JSON.toJSONString(node).getBytes());
     }
 
     public List<Node> globals() {
