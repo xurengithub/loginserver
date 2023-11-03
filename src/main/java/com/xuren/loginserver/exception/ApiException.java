@@ -1,5 +1,7 @@
 package com.xuren.loginserver.exception;
 
+import org.slf4j.helpers.MessageFormatter;
+
 /**
  * @author xuren
  */
@@ -13,14 +15,14 @@ public class ApiException extends RuntimeException{
         this.msg = statusCode.getMsg();
     }
 
-    public ApiException(StatusCode statusCode, String message) {
-        super(message);
+    public ApiException(StatusCode statusCode, String message, Object... args) {
+        super(MessageFormatter.arrayFormat(message, args).getMessage());
         this.code = statusCode.getCode();
         this.msg = statusCode.getMsg();
     }
 
-    public ApiException(String message) {
-        super(message);
+    public ApiException(String message, Object... args) {
+        super(MessageFormatter.arrayFormat(message, args).getMessage());
         this.code = StatusCode.API_ERROR.getCode();
         this.msg = StatusCode.API_ERROR.getMsg();
     }
