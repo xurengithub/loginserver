@@ -70,9 +70,10 @@ public class NodeCache implements InitializingBean {
         node.setType("GLOBAL");
         node.setRpcPort(rpcConfig.getPort());
         node.setRestPort(bootConfig.getPort());
-        if (curatorFramework.checkExists().forPath(ZkConsts.NODE_PATH) == null) {
-            ZKUtils.create(curatorFramework, ZkConsts.NODE_PATH, "".getBytes());
-        }
+        curatorFramework.checkExists().forPath(ZkConsts.NODE_PATH);
+//        if (curatorFramework.checkExists().forPath(ZkConsts.NODE_PATH) == null) {
+//            ZKUtils.create(curatorFramework, ZkConsts.NODE_PATH, "".getBytes());
+//        }
         ZKUtils.createEphemeral(curatorFramework, ZkConsts.NODE_PATH + "/" + path, JSON.toJSONString(node).getBytes());
     }
 
