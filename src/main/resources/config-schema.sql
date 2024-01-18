@@ -20,6 +20,7 @@ create table `t_account_info` (
 create table `t_role_info` (
     `id` int unsigned not null auto_increment primary key comment 'id',
     `uid` int not null comment 'uid',
+    `level` int not null default 0 comment 'level',
     `sec` varchar(64) not null comment '区服id',
     `role_name` varchar(64) not null default '' comment '角色名称',
     `insert_dt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,

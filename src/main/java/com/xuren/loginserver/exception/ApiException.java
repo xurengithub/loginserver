@@ -9,22 +9,22 @@ public class ApiException extends RuntimeException{
     private final int code;
     private final String msg;
 
-    public ApiException(StatusCode statusCode) {
-        super(statusCode.getMsg());
-        this.code = statusCode.getCode();
-        this.msg = statusCode.getMsg();
+    public ApiException(StatusCodeEnum statusCodeEnum) {
+        super(statusCodeEnum.getMsg());
+        this.code = statusCodeEnum.getCode();
+        this.msg = statusCodeEnum.getMsg();
     }
 
-    public ApiException(StatusCode statusCode, String message, Object... args) {
+    public ApiException(StatusCodeEnum statusCodeEnum, String message, Object... args) {
         super(MessageFormatter.arrayFormat(message, args).getMessage());
-        this.code = statusCode.getCode();
-        this.msg = statusCode.getMsg();
+        this.code = statusCodeEnum.getCode();
+        this.msg = statusCodeEnum.getMsg();
     }
 
     public ApiException(String message, Object... args) {
         super(MessageFormatter.arrayFormat(message, args).getMessage());
-        this.code = StatusCode.API_ERROR.getCode();
-        this.msg = StatusCode.API_ERROR.getMsg();
+        this.code = StatusCodeEnum.API_ERROR.getCode();
+        this.msg = StatusCodeEnum.API_ERROR.getMsg();
     }
 
     public int getCode() {

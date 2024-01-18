@@ -11,7 +11,7 @@ import com.xuren.loginserver.entity.AccountInfo;
 import com.xuren.loginserver.entity.RoleInfo;
 import com.xuren.loginserver.entity.UserInfo;
 import com.xuren.loginserver.exception.ApiException;
-import com.xuren.loginserver.exception.StatusCode;
+import com.xuren.loginserver.exception.StatusCodeEnum;
 import com.xuren.loginserver.service.IAccountInfoService;
 import com.xuren.loginserver.service.IRoleInfoService;
 import com.xuren.loginserver.service.IUserInfoService;
@@ -74,7 +74,7 @@ public class AccountController {
     public Response<AccountInfo> register(@RequestBody RegisterRequest request) {
         boolean exists = accountInfoService.getBaseMapper().exists(Wrappers.lambdaQuery(AccountInfo.class).eq(AccountInfo::getAccount, request.getAccount()));
         if (exists) {
-            throw new ApiException(StatusCode.EXISTS_ACCOUNT, "account already exists.");
+            throw new ApiException(StatusCodeEnum.EXISTS_ACCOUNT, "account already exists.");
         }
 
         UserInfo userInfo = new UserInfo();

@@ -31,6 +31,11 @@ public class RoleInfo implements Serializable {
     private Integer uid;
 
     /**
+     * level
+     */
+    private Integer level;
+
+    /**
      * id
      */
     private String sec;
@@ -55,6 +60,14 @@ public class RoleInfo implements Serializable {
 
     public void setUid(Integer uid) {
         this.uid = uid;
+    }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
     }
 
     public String getSec() {
@@ -94,6 +107,7 @@ public class RoleInfo implements Serializable {
         return "RoleInfo{" +
             "id = " + id +
             ", uid = " + uid +
+            ", level = " + level +
             ", sec = " + sec +
             ", roleName = " + roleName +
             ", insertDt = " + insertDt +
